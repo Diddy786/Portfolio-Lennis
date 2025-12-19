@@ -239,7 +239,58 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    cursor: none;
   }
+
+  @media (hover: none) {
+    body {
+      cursor: auto;
+    }
+  }
+}
+
+/* Gradient text animation */
+@keyframes gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient {
+  animation: gradient 3s ease infinite;
+}
+
+/* Perspective for 3D transforms */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection color */
+::selection {
+  background-color: hsl(var(--primary) / 0.3);
+  color: hsl(var(--foreground));
+}
+
+/* Glow effect */
+.glow {
+  box-shadow: 0 0 20px hsl(var(--primary) / 0.3),
+              0 0 40px hsl(var(--primary) / 0.2),
+              0 0 60px hsl(var(--primary) / 0.1);
+}
+
+/* Glass effect */
+.glass {
+  background: hsl(var(--background) / 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 /**
