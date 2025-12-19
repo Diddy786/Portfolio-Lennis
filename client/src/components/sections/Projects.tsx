@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ExternalLink } from 'lucide-react';
+import { ArrowUpRight, Github } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { Project } from '@shared/schema';
@@ -109,22 +109,25 @@ export function Projects() {
     
     gsap.from(cards, {
       y: 60,
-      stagger: 0.12,
-      duration: 0.7,
+      opacity: 0,
+      stagger: 0.1,
+      duration: 0.8,
       ease: 'power3.out',
       scrollTrigger: {
         trigger: sectionRef.current,
-        start: 'top 80%',
+        start: 'top 75%',
         toggleActions: 'play none none none',
       },
     });
   }, []);
 
   return (
-    <section id="projects" ref={sectionRef} className="py-12 md:py-16">
+    <section id="projects" ref={sectionRef} className="py-24 md:py-32 relative">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-10">
-          <h2 className="font-display text-4xl md:text-5xl font-bold mb-3" data-testid="heading-projects">
+        {/* Section header */}
+        <div className="text-center mb-16">
+          <span className="text-primary font-medium text-sm uppercase tracking-wider">Portfolio</span>
+          <h2 className="font-display text-4xl md:text-5xl font-bold mt-3 mb-4" data-testid="heading-projects">
             Featured Projects
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -132,51 +135,72 @@ export function Projects() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project) => (
             <Card 
               key={project.id} 
-              className="project-card group overflow-hidden hover-elevate transition-all duration-300"
+              className="project-card group overflow-hidden border-border/50 hover:border-primary/30 transition-all duration-500 hover:shadow-xl hover:shadow-primary/5 bg-card/50 backdrop-blur-sm"
               data-testid={`card-project-${project.id}`}
             >
-              <div className="relative aspect-video overflow-hidden bg-muted">
+              {/* Image container */}
+              <div className="relative aspect-[16/10] overflow-hidden">
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-
-              <CardHeader>
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <CardTitle className="font-display" data-testid={`text-project-title-${project.id}`}>
-                    {project.title}
-                  </CardTitle>
-                  <Button size="icon" variant="ghost" className="shrink-0" data-testid={`button-project-link-${project.id}`}>
-                    <ExternalLink className="w-4 h-4" />
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
+                
+                {/* Action buttons */}
+                <div className="absolute bottom-4 left-4 right-4 flex gap-2 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                  <Button size="sm" className="flex-1 gap-2 shadow-lg">
+                    <ArrowUpRight className="w-4 h-4" />
+                    View Project
+                  </Button>
+                  <Button size="icon" variant="secondary" className="shadow-lg">
+                    <Github className="w-4 h-4" />
                   </Button>
                 </div>
-                <CardDescription data-testid={`text-project-description-${project.id}`}>
-                  {project.description}
-                </CardDescription>
-              </CardHeader>
 
-              <CardContent>
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <Badge 
+                {/* Year badge */}
+                <div className="absolute top-4 right-4">
+                  <Badge variant="secondary" className="bg-background/80 backdrop-blur-sm border-0 shadow-sm">
+                    {project.year}
+                  </Badge>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-5">
+                <div className="mb-3">
+                  <h3 className="font-display text-xl font-semibold mb-2 group-hover:text-primary transition-colors" data-testid={`text-project-title-${project.id}`}>
+                    {project.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2" data-testid={`text-project-description-${project.id}`}>
+                    {project.description}
+                  </p>
+                </div>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-1.5">
+                  {project.tags.slice(0, 3).map((tag) => (
+                    <span 
                       key={tag} 
-                      variant="secondary"
-                      className="text-xs"
+                      className="px-2.5 py-1 rounded-md bg-muted/50 text-xs font-medium text-muted-foreground"
                       data-testid={`badge-project-tag-${project.id}-${tag.toLowerCase()}`}
                     >
                       {tag}
-                    </Badge>
+                    </span>
                   ))}
+                  {project.tags.length > 3 && (
+                    <span className="px-2.5 py-1 rounded-md bg-muted/50 text-xs font-medium text-muted-foreground">
+                      +{project.tags.length - 3}
+                    </span>
+                  )}
                 </div>
-              </CardContent>
+              </div>
             </Card>
           ))}
         </div>

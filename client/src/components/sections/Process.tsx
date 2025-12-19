@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Lightbulb, Code, Rocket, TestTube } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Lightbulb, Code, Rocket, TestTube, ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -9,102 +9,102 @@ gsap.registerPlugin(ScrollTrigger);
 const steps = [
   {
     icon: Lightbulb,
-    title: 'Discover & Design',
-    description: 'Understanding requirements, user needs, and crafting intuitive wireframes and prototypes',
+    title: 'Discover',
+    description: 'Understanding your vision, goals, and requirements through collaborative discussions',
+    color: 'from-amber-500 to-orange-500',
   },
   {
     icon: Code,
-    title: 'Develop',
-    description: 'Building robust, scalable solutions with clean code and modern best practices',
+    title: 'Design & Develop',
+    description: 'Crafting intuitive interfaces and building robust, scalable solutions',
+    color: 'from-blue-500 to-cyan-500',
   },
   {
     icon: TestTube,
     title: 'Test & Refine',
-    description: 'Rigorous testing, performance optimization, and iterative improvements',
+    description: 'Rigorous testing and iterative improvements for pixel-perfect results',
+    color: 'from-purple-500 to-pink-500',
   },
   {
     icon: Rocket,
-    title: 'Deploy & Support',
-    description: 'Seamless deployment, monitoring, and ongoing maintenance for long-term success',
+    title: 'Launch & Support',
+    description: 'Seamless deployment with ongoing maintenance and optimization',
+    color: 'from-green-500 to-emerald-500',
   },
 ];
 
 export function Process() {
   const sectionRef = useRef<HTMLElement>(null);
-  const lineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!sectionRef.current || !lineRef.current) return;
+    if (!sectionRef.current) return;
 
     gsap.from('.process-step', {
       opacity: 0,
-      y: 50,
-      stagger: 0.2,
+      y: 40,
+      stagger: 0.15,
       duration: 0.8,
+      ease: 'power3.out',
       scrollTrigger: {
         trigger: sectionRef.current,
         start: 'top 70%',
-        end: 'top 30%',
-        toggleActions: 'play none none none',
-      },
-    });
-
-    gsap.from(lineRef.current, {
-      scaleX: 0,
-      transformOrigin: 'left center',
-      duration: 1.5,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top 60%',
         toggleActions: 'play none none none',
       },
     });
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-12 md:py-16 relative overflow-hidden">
+    <section ref={sectionRef} className="py-24 md:py-32 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-10">
-          <h2 className="font-display text-4xl md:text-5xl font-bold mb-3" data-testid="heading-process">
+        {/* Section header */}
+        <div className="text-center mb-16">
+          <span className="text-primary font-medium text-sm uppercase tracking-wider">How I Work</span>
+          <h2 className="font-display text-4xl md:text-5xl font-bold mt-3 mb-4" data-testid="heading-process">
             My Process
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            A systematic approach to delivering exceptional results
+            A proven approach to delivering exceptional results, every time
           </p>
         </div>
 
-        <div className="relative">
-          <div 
-            ref={lineRef}
-            className="hidden md:block absolute top-20 left-0 right-0 h-1 bg-gradient-to-r from-primary to-purple-600"
-          />
-
-          <div className="grid md:grid-cols-4 gap-6">
-            {steps.map((step, index) => {
-              const Icon = step.icon;
-              return (
-                <div key={index} className="process-step relative">
-                  <Card className="h-full hover-elevate transition-all duration-300" data-testid={`card-process-${index}`}>
-                    <CardContent className="p-6 text-center">
-                      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-                        <Icon className="w-8 h-8 text-primary" />
-                      </div>
-                      <h3 className="font-display text-xl font-semibold mb-3" data-testid={`heading-process-step-${index}`}>
-                        {step.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {step.description}
-                      </p>
-                    </CardContent>
-                  </Card>
-                  <div className="hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-primary text-primary-foreground font-bold absolute -top-5 left-1/2 -translate-x-1/2 z-10 border-4 border-background">
-                    {index + 1}
+        {/* Process steps */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {steps.map((step, index) => {
+            const Icon = step.icon;
+            return (
+              <div key={index} className="process-step relative group">
+                <Card 
+                  className="h-full p-6 border-border/50 hover:border-primary/30 transition-all duration-500 hover:shadow-xl hover:shadow-primary/5 relative overflow-hidden"
+                  data-testid={`card-process-${index}`}
+                >
+                  {/* Step number */}
+                  <div className="absolute top-4 right-4 text-6xl font-bold text-muted/20 group-hover:text-primary/10 transition-colors">
+                    {String(index + 1).padStart(2, '0')}
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                  
+                  {/* Icon */}
+                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${step.color} flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                    <Icon className="w-7 h-7 text-white" />
+                  </div>
+                  
+                  {/* Content */}
+                  <h3 className="font-display text-xl font-semibold mb-3" data-testid={`heading-process-step-${index}`}>
+                    {step.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {step.description}
+                  </p>
+                </Card>
+
+                {/* Arrow connector (hidden on last item and mobile) */}
+                {index < steps.length - 1 && (
+                  <div className="hidden lg:flex absolute top-1/2 -right-3 -translate-y-1/2 z-10 w-6 h-6 rounded-full bg-muted items-center justify-center">
+                    <ArrowRight className="w-3 h-3 text-muted-foreground" />
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

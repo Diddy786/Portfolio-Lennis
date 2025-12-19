@@ -30,7 +30,7 @@ const technologies = [
   { name: 'Figma', icon: SiFigma, color: '#F24E1E' },
   { name: 'Git', icon: SiGit, color: '#F05032' },
   { name: 'Cloud', icon: Cloud, color: '#FF9900' },
-  { name: 'Vercel', icon: SiVercel, color: '#000000' },
+  { name: 'Vercel', icon: SiVercel, color: '#ffffff' },
 ];
 
 export function TechStack() {
@@ -39,61 +39,62 @@ export function TechStack() {
   useEffect(() => {
     if (!sectionRef.current) return;
 
-    const icons = sectionRef.current.querySelectorAll('.tech-icon');
-
-    icons.forEach((icon, index) => {
-      gsap.from(icon, {
-        opacity: 0,
-        scale: 0,
-        rotation: 360,
-        duration: 0.8,
-        delay: index * 0.05,
-        ease: 'back.out(1.7)',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 70%',
-          toggleActions: 'play none none none',
-        },
-      });
-
-      gsap.to(icon, {
-        y: -10,
-        duration: 2,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
-        delay: index * 0.1,
-      });
+    gsap.from('.tech-item', {
+      opacity: 0,
+      y: 30,
+      scale: 0.9,
+      stagger: 0.05,
+      duration: 0.6,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top 70%',
+        toggleActions: 'play none none none',
+      },
     });
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-12 md:py-16 relative overflow-hidden bg-background">
+    <section ref={sectionRef} className="py-24 md:py-32 relative overflow-hidden bg-background">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-10">
-          <h2 className="font-display text-4xl md:text-5xl font-bold mb-3" data-testid="heading-tech-stack">
+        {/* Section header */}
+        <div className="text-center mb-16">
+          <span className="text-primary font-medium text-sm uppercase tracking-wider">Technologies</span>
+          <h2 className="font-display text-4xl md:text-5xl font-bold mt-3 mb-4" data-testid="heading-tech-stack">
             Tech Stack
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            The technologies I work with to build amazing products
+            The tools and technologies I use to bring ideas to life
           </p>
         </div>
 
-        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8">
+        {/* Tech grid */}
+        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
           {technologies.map((tech) => {
             const Icon = tech.icon;
             return (
               <div
                 key={tech.name}
-                className="tech-icon flex flex-col items-center gap-3 group"
+                className="tech-item group"
                 data-testid={`tech-${tech.name.toLowerCase().replace(/\s+/g, '-')}`}
               >
-                <div className="p-4 rounded-xl bg-background hover-elevate transition-all duration-300 border border-border group-hover:border-primary/50">
-                  <Icon className="w-12 h-12 md:w-16 md:h-16 transition-colors" style={{ color: tech.color }} />
+                <div className="relative p-6 rounded-2xl bg-card/50 border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 flex flex-col items-center gap-4 group-hover:-translate-y-1">
+                  {/* Glow effect on hover */}
+                  <div 
+                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"
+                    style={{ backgroundColor: `${tech.color}10` }}
+                  />
+                  
+                  <div className="relative">
+                    <Icon 
+                      className="w-10 h-10 md:w-12 md:h-12 transition-all duration-300 group-hover:scale-110" 
+                      style={{ color: tech.color }} 
+                    />
+                  </div>
+                  <span className="relative text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+                    {tech.name}
+                  </span>
                 </div>
-                <span className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
-                  {tech.name}
-                </span>
               </div>
             );
           })}

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
+import { Briefcase, Users, Award } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -50,54 +51,85 @@ export function About() {
     });
   }, []);
 
+  const stats = [
+    { value: yearsExperience, label: 'Years Experience', icon: Briefcase, suffix: '+' },
+    { value: projectsCompleted, label: 'Projects Completed', icon: Award, suffix: '+' },
+    { value: clientsSatisfied, label: 'Happy Clients', icon: Users, suffix: '+' },
+  ];
+
   return (
-    <section id="about" ref={sectionRef} className="py-12 md:py-16 relative">
+    <section id="about" ref={sectionRef} className="py-24 md:py-32 relative">
+      {/* Subtle background accent */}
+      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
+      
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          <div className="space-y-4">
-            <h2 className="about-text font-display text-4xl md:text-5xl font-bold" data-testid="heading-about">
-              About Me
+        {/* Section header */}
+        <div className="about-text mb-4">
+          <span className="text-primary font-medium text-sm uppercase tracking-wider">About Me</span>
+        </div>
+        
+        <div className="grid lg:grid-cols-2 gap-16 items-start">
+          <div className="space-y-6">
+            <h2 className="about-text font-display text-4xl md:text-5xl font-bold leading-tight" data-testid="heading-about">
+              Passionate about creating{' '}
+              <span className="bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">
+                impactful
+              </span>{' '}
+              digital solutions
             </h2>
-            <p className="about-text text-lg text-muted-foreground leading-relaxed" data-testid="text-about-description">
-              I'm a passionate creative developer who loves pushing the boundaries of what's possible on the web. 
-              Specializing in modern JavaScript frameworks, WebGL, and animation libraries, I create engaging digital 
-              experiences that leave a lasting impression.
-            </p>
-            <p className="about-text text-lg text-muted-foreground leading-relaxed">
-              With a keen eye for design and a deep understanding of web technologies, I bridge the gap between 
-              aesthetics and functionality to deliver exceptional user experiences.
-            </p>
+            
+            <div className="space-y-4">
+              <p className="about-text text-lg text-muted-foreground leading-relaxed" data-testid="text-about-description">
+                I'm a full-stack developer with a passion for building beautiful, functional, and user-centered digital experiences. With expertise in modern JavaScript frameworks, I bring ideas to life through clean code and thoughtful design.
+              </p>
+              <p className="about-text text-lg text-muted-foreground leading-relaxed">
+                My approach combines technical excellence with creative problem-solving, ensuring every project not only meets but exceeds expectations. I believe in writing maintainable code and creating interfaces that users love.
+              </p>
+            </div>
+
+            {/* Highlights */}
+            <div className="about-text flex flex-wrap gap-3 pt-4">
+              {['React', 'TypeScript', 'Node.js', 'UI/UX', 'Performance'].map((skill) => (
+                <span 
+                  key={skill}
+                  className="px-4 py-2 rounded-full bg-muted/50 text-sm font-medium text-foreground/80 border border-border/50"
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-5">
-            <Card className="p-6 hover-elevate transition-all duration-300" data-testid="card-stat-years">
-              <div className="text-center">
-                <div className="counter text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent mb-2" data-target={yearsExperience}>
-                  0
-                </div>
-                <div className="text-muted-foreground font-medium">Years Experience</div>
-              </div>
-            </Card>
-
-            <div className="grid grid-cols-2 gap-5">
-              <Card className="p-5 hover-elevate transition-all duration-300" data-testid="card-stat-projects">
-                <div className="text-center">
-                  <div className="counter text-3xl md:text-4xl font-bold text-primary mb-1" data-target={projectsCompleted}>
-                    0
+          {/* Stats cards */}
+          <div className="grid gap-4">
+            {stats.map((stat, index) => {
+              const Icon = stat.icon;
+              return (
+                <Card 
+                  key={index}
+                  className="p-6 hover-elevate transition-all duration-300 group border-border/50 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5" 
+                  data-testid={`card-stat-${index}`}
+                >
+                  <div className="flex items-center gap-5">
+                    <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/10 to-purple-500/10 flex items-center justify-center group-hover:from-primary/20 group-hover:to-purple-500/20 transition-colors">
+                      <Icon className="w-6 h-6 text-primary" />
+                    </div>
+                    <div>
+                      <div className="flex items-baseline gap-1">
+                        <span 
+                          className="counter text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent" 
+                          data-target={stat.value}
+                        >
+                          0
+                        </span>
+                        <span className="text-2xl font-bold text-primary">{stat.suffix}</span>
+                      </div>
+                      <div className="text-muted-foreground font-medium">{stat.label}</div>
+                    </div>
                   </div>
-                  <div className="text-sm text-muted-foreground">Projects</div>
-                </div>
-              </Card>
-
-              <Card className="p-5 hover-elevate transition-all duration-300" data-testid="card-stat-clients">
-                <div className="text-center">
-                  <div className="counter text-3xl md:text-4xl font-bold text-primary mb-1" data-target={clientsSatisfied}>
-                    0
-                  </div>
-                  <div className="text-sm text-muted-foreground">Clients</div>
-                </div>
-              </Card>
-            </div>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </div>
